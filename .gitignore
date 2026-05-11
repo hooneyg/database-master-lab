@@ -1,0 +1,22 @@
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/resources/gradle-wrapper.properties
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+
+### Eclipse ###
+.settings/
+.classpath
+.project
+bin/
+
+### Others ###
+*.log
+*.swp
+.DS_Store
