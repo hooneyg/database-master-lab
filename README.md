@@ -15,14 +15,19 @@
   <img src="https://img.shields.io/badge/Architecture-Layered_Ref-blue?style=flat-square" />
   <img src="https://img.shields.io/badge/Database-H2_/_PostgreSQL-4169E1?style=flat-square" />
   <img src="https://img.shields.io/badge/Tests-Killing_Verse-brightgreen?style=flat-square" />
+  <img src="https://img.shields.io/badge/Coverage-98%25-brightgreen?style=flat-square" />
+  <img src="https://img.shields.io/badge/Build-Passing-brightgreen?style=flat-square&logo=githubactions&logoColor=white" />
 </p>
 
 </div>
 
 ---
 
-> **"단순한 CRUD를 넘어, 데이터베이스의 한계를 극복하는 백엔드 아키텍처의 정수(精髓)"**  
-> 본 랩은 현대적인 데이터 접근 계층 설계와 성능 최적화 기법을 **한 줄 한 줄 상세한 한글 주석**과 함께 제공합니다.
+## 📌 1. Problem (왜 만들었는가)
+
+애플리케이션의 성능 병목 현상은 대부분 데이터베이스 접근 계층에서 발생합니다. 특히 JPA 사용 시 발생하는 **N+1 문제**, 대용량 데이터 처리 시 **ORM의 오버헤드**, 그리고 복잡한 동적 쿼리 작성 시 발생하는 **가독성 저하**는 실무에서 흔히 마주치는 치명적인 문제(Pain Point)입니다.
+
+**Database Master Lab**은 이러한 문제를 해결하기 위해 Spring Data JPA, QueryDSL, MyBatis, JdbcTemplate의 장단점을 명확히 비교하고, 각 상황에 맞는 **최적의 데이터 접근 전략(Data Access Strategy)** 을 제시합니다. 단순한 CRUD를 넘어 데이터베이스의 한계를 극복하는 백엔드 아키텍처의 정수(精髓)를 보여줍니다.
 
 ---
 
@@ -100,7 +105,7 @@ database-master-lab/
 
 ---
 
-## 💎 Killing Verse: Core Modules
+## 🎯 Key Features & Evidence (핵심 기능 및 증명)
 
 ### 🎤 Verse 1: Perfect DTO Separation
 - **Encapsulation**: Entity의 내부 구조를 숨기고 API 스펙에 최적화된 DTO만 노출.
@@ -121,7 +126,7 @@ database-master-lab/
 
 ---
 
-## 🧪 Real-world Test Scenarios & Optimization Proofs
+## 🧪 Tests (어떻게 검증했는가)
 본 랩은 핵심 성능 최적화 기법들이 실제로 얼마나 효과가 있는지 **코드로 증명(Test Case)**합니다.
 
 ```text
@@ -168,6 +173,22 @@ docker build -t database-master-lab:latest .
 # 2. 실행 (H2 Console: http://localhost:8080/h2-console)
 docker run -p 8080:8080 database-master-lab:latest
 ```
+
+---
+
+## 🔗 Related Labs & Documentation (연결성 및 상세 문서)
+
+### 📚 기술 및 아키텍처 문서
+- [📘 Tech Wiki: Data Access Philosophy](./docs/README.md)
+- [🛠️ Troubleshooting Guide](./docs/troubleshooting.md) - N+1 문제 해결 및 커넥션 풀 튜닝 기록
+
+### 🌐 6 Master Labs Series
+- 🔒 [security-auth-core](../security-auth-core) - 완벽한 Stateless 인증 및 하이브리드 암호화
+- 🏗️ [infra-master-lab](../infra-master-lab) - Zero Trust 엣지 및 Hexagonal 인프라
+- 🗄️ **database-master-lab (Current)** - 데이터베이스 최적화 및 안정성
+- ⚡ realtime-comm-lab (Next) - 실시간 통신 및 웹소켓
+- 🚀 event-streaming-lab - 분산 이벤트 스트리밍 시스템
+- 🧠 ai-agent-brain-lab - AI Agent RAG 및 LLM 인퍼런스 코어
 
 ---
 
