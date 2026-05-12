@@ -65,6 +65,21 @@ public class UserQueryRepository {
                 .fetch();
     }
 
+    /**
+     * ⚠️ 전통적인 Offset 페이징 (비교 대조군)
+     * 페이지가 뒤로 갈수록 앞에 있는 데이터를 모두 읽어야 하므로 성능이 기하급수적으로 저하됨
+     */
+    public List<UserEntity> searchUsersWithOffset(int offset, int limit) {
+        QUserEntity user = QUserEntity.userEntity;
+
+        return queryFactory
+                .selectFrom(user)
+                .orderBy(user.id.desc())
+                .offset(offset)
+                .limit(limit)
+                .fetch();
+    }
+
     // --- 조건절 모듈화 ---
 
     private BooleanExpression ltUserId(Long lastUserId) {

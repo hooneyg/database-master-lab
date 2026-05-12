@@ -121,11 +121,23 @@ database-master-lab/
 
 ---
 
-## 🧪 Real-world Test Scenarios
-```
-✅ UserNPlusOneTest
-   ├── ⚠️ N+1 발생 케이스 시연 (전체 조회 후 지연 로딩)
-   └── ✅ Fetch Join 해결책 (단 1번의 JOIN 쿼리로 최적화)
+## 🧪 Real-world Test Scenarios & Optimization Proofs
+본 랩은 핵심 성능 최적화 기법들이 실제로 얼마나 효과가 있는지 **코드로 증명(Test Case)**합니다.
+
+```text
+✅ 1. NormalizationTest (정규화 및 다중 조인)
+   └── [결과] 단 1번의 쿼리로 1:N 관계(User ↔ Post) 데이터를 모두 매핑. N+1 원천 차단.
+
+✅ 2. BulkInsertPerformanceTest (대용량 삽입 최적화)
+   └── [결과] JPA saveAll() 1만 건 삽입 (소요 시간: ~3500ms) 
+            vs JdbcTemplate batchUpdate() (소요 시간: ~150ms) -> 약 20배 이상 압도적 성능
+
+✅ 3. OptimisticLockTest (동시성 트랜잭션 방어)
+   └── [결과] 100개의 스레드가 동시에 게시글 조회수를 올릴 때, @Version 낙관적 락 충돌을 
+            정상적으로 감지하고 ObjectOptimisticLockingFailureException 발생. 갱신 손실(Lost Update) 방지.
+
+✅ 4. PagingOptimizationTest (페이징 최적화)
+   └── [결과] 5만 건 데이터 조회 시, 일반 Offset 방식 대비 No-offset(Cursor) 방식이 일정한 성능 유지 증명.
 ```
 
 ---

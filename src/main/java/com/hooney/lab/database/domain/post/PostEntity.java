@@ -32,6 +32,17 @@ public class PostEntity extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    @Builder.Default
+    @Column(nullable = false)
+    private Long views = 0L;
+
+    /**
+     * 🔒 Optimistic Lock (낙관적 락)
+     * 동시성 트랜잭션에서 충돌을 감지하기 위한 버전 관리 필드
+     */
+    @Version
+    private Long version;
+
     /**
      * 🔗 ManyToOne 연관관계 (N:1)
      * FetchType.LAZY: 지연 로딩을 기본으로 사용하여 N+1 문제를 예방하는 첫걸음
@@ -42,5 +53,12 @@ public class PostEntity extends BaseTimeEntity {
 
     public void assignUser(UserEntity user) {
         this.user = user;
+    }
+
+    /**
+     * 🛠️ 비즈니스 로직: 조회수 증가
+     */
+    public void incrementViews() {
+        this.views++;
     }
 }

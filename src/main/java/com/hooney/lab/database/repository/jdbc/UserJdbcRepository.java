@@ -50,4 +50,29 @@ public class UserJdbcRepository {
     public int countUsers() {
         return jdbcTemplate.queryForObject("SELECT count(*) FROM USERS", Integer.class);
     }
+
+    /**
+     * [Task 2] 대량 데이터 삽입 성능 검증용 Bulk Insert
+     * JdbcTemplate의 batchUpdate를 활용하여 단 한 번의 네트워크 I/O로 수만 건의 데이터를 삽입
+     */
+    public void batchInsert(java.util.List<UserEntity> users) {
+        String sql = "INSERT INTO USERS (email, name, phone_number, status, created_at, modified_at) " +
+                     "VALUES (?, ?, ?, ?, NOW(), NOW())";
+        
+        jdbcTemplate.batchUpdate(sql, new org.springframework.jdbc.core.BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(java.sql.PreparedStatement ps, int i) throws java.sql.SQLException {
+                UserEntity user = users.get(i);
+                ps.setString(1, user.getEmail());
+                ps.setString(2, user.getName());
+                ps.setString(3, user.getPhoneNumber());
+                ps.setString(4, user.getStatus().name());
+            }
+
+            @Override
+            public int getBatchSize() {
+                return users.size();
+            }
+        });
+    }
 }

@@ -38,4 +38,10 @@ public interface UserMyBatisMapper {
      * 사용자 저장
      */
     void save(UserEntity user);
+
+    /**
+     * [Task 1] 1:N 조인 쿼리 최적화 검증용
+     * 단일 SQL 쿼리로 User와 연관된 N개의 Post를 한 번에 조회하여 매핑
+     */
+    Optional<UserEntity> findUserWithPosts(@Param("id") Long id);
 }
