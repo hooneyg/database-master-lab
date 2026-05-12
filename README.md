@@ -107,43 +107,22 @@ database-master-lab/
 
 ## 🎯 Key Features & Evidence (핵심 기능 및 증명)
 
-### 🎤 Verse 1: Perfect DTO Separation
+### 🎯 Feature 1: DTO Boundary Separation
 - **Encapsulation**: Entity의 내부 구조를 숨기고 API 스펙에 최적화된 DTO만 노출.
 - **Validation**: `@NotBlank`, `@Email` 등 도메인 계층 침범 없는 순수 DTO 검증.
 - **Factory Method**: Entity ↔ DTO 간 가독성 높은 변환 패턴 제공.
 
-### 🎤 Verse 2: Multi-Access Comparison
+### 🎯 Feature 2: Multi-Access Comparison
 | Technology | Best Use Case | Implementation |
 | :--- | :--- | :--- |
 | **JPA / QueryDSL** | 일반적인 CRUD 및 복잡한 동적 쿼리 | `UserQueryRepository` |
 | **MyBatis** | 복잡한 통계, 조인, SQL 튜닝 집중 환경 | `UserMyBatisMapper` |
 | **JdbcTemplate** | 대량 데이터 Bulk Insert, 초고성능 배치 | `UserJdbcRepository` |
 
-### 🎤 Verse 3: High-Performance Optimization
+### 🎯 Feature 3: Query Optimization & Pagination Strategy
 - **N+1 Resolver**: `JOIN FETCH`와 `Batch Size` 전략으로 조회 성능 극대화.
 - **Cursor Paging**: `offset` 없이 대용량 데이터를 빠르게 순회하는 No-offset 페이징.
 - **Bulk Update**: 영속성 컨텍스트를 고려한 `@Modifying` 기반 대량 수정 전략.
-
----
-
-## 🧪 Tests (어떻게 검증했는가)
-본 랩은 핵심 성능 최적화 기법들이 실제로 얼마나 효과가 있는지 **코드로 증명(Test Case)**합니다.
-
-```text
-✅ 1. NormalizationTest (정규화 및 다중 조인)
-   └── [결과] 단 1번의 쿼리로 1:N 관계(User ↔ Post) 데이터를 모두 매핑. N+1 원천 차단.
-
-✅ 2. BulkInsertPerformanceTest (대용량 삽입 최적화)
-   └── [결과] JPA saveAll() 1만 건 삽입 (소요 시간: ~3500ms) 
-            vs JdbcTemplate batchUpdate() (소요 시간: ~150ms) -> 약 20배 이상 압도적 성능
-
-✅ 3. OptimisticLockTest (동시성 트랜잭션 방어)
-   └── [결과] 100개의 스레드가 동시에 게시글 조회수를 올릴 때, @Version 낙관적 락 충돌을 
-            정상적으로 감지하고 ObjectOptimisticLockingFailureException 발생. 갱신 손실(Lost Update) 방지.
-
-✅ 4. PagingOptimizationTest (페이징 최적화)
-   └── [결과] 5만 건 데이터 조회 시, 일반 Offset 방식 대비 No-offset(Cursor) 방식이 일정한 성능 유지 증명.
-```
 
 ---
 
@@ -176,19 +155,65 @@ docker run -p 8080:8080 database-master-lab:latest
 
 ---
 
-## 🔗 Related Labs & Documentation (연결성 및 상세 문서)
+## 🧪 Tests (어떻게 검증했는가)
+본 랩은 핵심 성능 최적화 기법들이 실제로 얼마나 효과가 있는지 **코드로 증명(Test Case)**합니다.
 
-### 📚 기술 및 아키텍처 문서
+```text
+✅ 1. N+1 Prevention Test (N+1 문제 방지 및 다중 조인)
+   └── `UserNPlusOneTest.java`
+   └── [결과] 단 1번의 쿼리로 1:N 관계(User ↔ Post) 데이터를 모두 매핑하여 N+1 원천 차단 증명.
+
+✅ 2. Repository Access Pattern Benchmark (대용량 삽입 최적화)
+   └── `BulkInsertPerformanceTest.java`
+   └── [결과] JPA saveAll() 1만 건 삽입 (~3500ms) vs JdbcTemplate batchUpdate() (~150ms) -> 20배 이상 압도적 성능 증명.
+
+✅ 3. Concurrent Transaction Defense (동시성 방어 및 낙관적 락)
+   └── `OptimisticLockTest.java`
+   └── [결과] 100개의 스레드가 동시 접근 시 @Version 기반 충돌 감지 및 Lost Update 방지 증명.
+
+✅ 4. Cursor Pagination Performance (페이징 최적화)
+   └── `PagingOptimizationTest.java`
+   └── [결과] 5만 건 데이터 조회 시 Offset 방식 대비 No-offset(Cursor) 방식의 일정한 성능 유지 증명.
+
+✅ 5. QueryDSL Dynamic Query Test (동적 쿼리 검증)
+   └── `QueryDSLDynamicQueryTest.java`
+   └── [결과] 다양한 검색 조건(필터링, 정렬)의 조합에서도 안전하게 동적 쿼리가 생성됨을 증명.
+```
+
+---
+
+## 🧭 Roadmap
+
+- [ ] Redis cache strategy 보강
+- [ ] Index tuning report 추가
+- [ ] Transaction isolation examples 추가
+- [ ] Bulk insert/update benchmark 추가
+- [ ] Slow query 분석 문서 추가
+
+---
+
+## 🔗 Related Labs
+
+| Related Lab | 연결 이유 |
+| --- | --- |
+| `infra-master-lab` | 이 LAB을 운영 환경에 배포하기 위한 인프라 기준 |
+| `security-auth-core` | API 또는 연결 요청의 인증/인가 기준 |
+| `event-streaming-lab` | 비동기 이벤트 처리와 실패 복구 기준 |
+| `realtime-comm-lab` | 실시간 연결과 메시지 전달 기준 |
+| `ai-agent-brain-lab` | LAB 문서 기반 AI 질의/자동화 확장 기준 |
+
+---
+
+## 📚 Documentation
+
 - [📘 Tech Wiki: Data Access Philosophy](./docs/README.md)
 - [🛠️ Troubleshooting Guide](./docs/troubleshooting.md) - N+1 문제 해결 및 커넥션 풀 튜닝 기록
 
-### 🌐 6 Master Labs Series
-- 🔒 [security-auth-core](../security-auth-core) - 완벽한 Stateless 인증 및 하이브리드 암호화
-- 🏗️ [infra-master-lab](../infra-master-lab) - Zero Trust 엣지 및 Hexagonal 인프라
-- 🗄️ **database-master-lab (Current)** - 데이터베이스 최적화 및 안정성
-- ⚡ realtime-comm-lab (Next) - 실시간 통신 및 웹소켓
-- 🚀 event-streaming-lab - 분산 이벤트 스트리밍 시스템
-- 🧠 ai-agent-brain-lab - AI Agent RAG 및 LLM 인퍼런스 코어
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
