@@ -142,9 +142,24 @@ database-master-lab/
 
 ---
 
-## ⚡ Quick Start (Docker Support)
+## ⚡ Quick Start (Docker & Docker Compose Support)
 
-본 프로젝트는 로컬의 Java 버전과 상관없이 **Docker(Java 21)** 환경에서 즉시 빌드 및 테스트가 가능합니다.
+본 프로젝트는 로컬의 Java 버전과 상관없이 **Docker(Java 21)** 환경에서 즉시 빌드 및 테스트가 가능합니다. 
+인메모리 H2 모드와 실제 엔터프라이즈 PostgreSQL 환경 중 선택하여 실행할 수 있습니다.
+
+### 옵션 A. Docker Compose (추천 - PostgreSQL 연동)
+엔터프라이즈 환경 테스트를 위해 PostgreSQL 데이터베이스 컨테이너와 함께 실행합니다.
+
+```bash
+# 앱과 DB(PostgreSQL)를 동시에 빌드 및 백그라운드 실행
+docker-compose up -d --build
+
+# 로그 확인
+docker-compose logs -f
+```
+
+### 옵션 B. 단일 Docker 컨테이너 (H2 In-memory)
+가장 빠르게 애플리케이션만 단독으로 띄워 H2 DB로 테스트하는 방법입니다.
 
 ```bash
 # 1. 빌드 및 이미지 생성
