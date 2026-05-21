@@ -20,3 +20,7 @@ bin/
 *.log
 *.swp
 .DS_Store
+
+### Custom Ignored Folders ###
+gh-test-results/
+

@@ -18,6 +18,10 @@
   <img src="https://img.shields.io/badge/Build-Passing-brightgreen?style=flat-square&logo=githubactions&logoColor=white" />
 </p>
 
+<p align="center">
+  <b>🔗 Homepage / Demo:</b> <a href="https://hooneyg.github.io/database-master-lab">hooneyg.github.io/database-master-lab</a>
+</p>
+
 </div>
 
 ---
@@ -204,6 +208,7 @@ docker run -p 8080:8080 database-master-lab:latest
 
 ## 📚 Documentation
 
+- [Query Benchmark Scenario Guide](./examples/query_benchmark.md)
 - [Tech Wiki: Data Access Philosophy](./docs/README.md)
 - [Troubleshooting Guide](./docs/troubleshooting.md)
 

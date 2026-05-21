@@ -38,7 +38,7 @@ dependencies {
     runtimeOnly 'com.h2database:h2'
     
     // MyBatis: SQL 매핑 방식 (Module 2 비교용)
-    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:4.0.1'
 
     // QueryDSL: 동적 쿼리 및 타입 세이프 쿼리 (Module 2, 3용)
     implementation 'com.querydsl:querydsl-jpa:5.1.0:jakarta'
@@ -51,6 +51,7 @@ dependencies {
     // ═══════════════════════════════════════════════════════
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
     
     // MapStruct: DTO ↔ Entity 자동 매핑 (현업 필수)
     implementation 'org.mapstruct:mapstruct:1.6.3'
@@ -62,11 +63,13 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.mockito:mockito-subclass:5.14.2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+    jvmArgs "-Djdk.attach.allowAttachSelf=true", "-XX:+EnableDynamicAgentLoading"
 }
 
 // ─────────────────────────────────────────────────────────
