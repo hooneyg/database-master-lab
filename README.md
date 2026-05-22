@@ -19,7 +19,7 @@
 </p>
 
 <p align="center">
-  <b>🔗 Homepage / Demo:</b> <a href="https://hooneyg.github.io/database-master-lab">hooneyg.github.io/database-master-lab</a>
+  <b>🔗 Homepage / Demo:</b> <a href="https://hooneyg.github.io">hooneyg.github.io</a>
 </p>
 
 </div>
