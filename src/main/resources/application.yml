@@ -42,3 +42,37 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
+
+# ─────────────────────────────────────────────────────────
+# 📖 SpringDoc OpenAPI (Swagger) 설정
+# ─────────────────────────────────────────────────────────
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    display-request-duration: true # 요청 처리 시간 표시
+    groups-order: DESC             # 그룹 정렬 순서
+    operations-sorter: method      # API 메서드별 정렬 (GET, POST 등)
+    disable-swagger-default-url: true
+    doc-expansion: list            # 기본적으로 목록을 펼쳐서 표시
+    
+---
+
+ # ─────────────────────────────────────────────────────────
+ # 🐳 Docker 환경 전용 프로필 설정 (도커 컴포즈 빌드 시 활성화)
+ # ─────────────────────────────────────────────────────────
+
+spring:
+  config:
+    activate:
+      on-profile: docker # 컴포즈의 SPRING_PROFILES_ACTIVE=docker와 매칭
+
+  # 도커 환경일 때 PostgreSQL 드라이버를 강제합니다.
+  datasource:
+    driver-class-name: org.postgresql.Driver
+
+  # 배포 환경인 도커에서는 테이블 선언 및 drop 방식을 다르게 가져가려면 아래 설정을 조절하세요.
+  jpa:
+    hibernate:
+      ddl-auto: update # 로컬처럼 매번 전체 drop하는 대신 update 권장
